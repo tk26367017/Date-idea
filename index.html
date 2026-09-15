@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Perfect Date Idea</title>
+<style>
+  :root {
+    --cream: #FBF6F1;
+    --plum: #3D2B3D;
+    --plum-soft: #6B4E66;
+    --rose: #C97B84;
+    --rose-deep: #A85D68;
+    --gold: #C9A227;
+    --ink: #2A1F2A;
+    --line: #E4D8D0;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+    line-height: 1.5;
+    padding: 48px 20px 80px;
+  }
+
+  .wrap {
+    max-width: 620px;
+    margin: 0 auto;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  header .mark {
+    font-family: Georgia, serif;
+    font-size: 15px;
+    letter-spacing: 0.02em;
+    color: var(--rose-deep);
+    margin-bottom: 14px;
+  }
+
+  h1 {
+    font-family: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+    font-weight: 400;
+    font-size: 44px;
+    line-height: 1.08;
+    margin: 0 0 14px;
+    color: var(--plum);
+    font-style: italic;
+  }
+
+  header p {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    color: var(--plum-soft);
+    max-width: 42ch;
+    margin: 0 auto;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .q {
+    border-top: 1px solid var(--line);
+    padding: 28px 0;
+  }
+
+  .q:last-of-type {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .q-num {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 12px;
+    color: var(--rose-deep);
+    margin-bottom: 8px;
+  }
+
+  .q-title {
+    font-family: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+    font-size: 20px;
+    color: var(--plum);
+    margin: 0 0 16px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15.5px;
+    color: var(--ink);
+    transition: background 0.15s ease;
+  }
+
+  .option:hover {
+    background: rgba(201, 123, 132, 0.08);
+  }
+
+  .option input {
+    accent-color: var(--rose-deep);
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+  }
+
+  .option.checked {
+    background: rgba(201, 123, 132, 0.12);
+  }
+
+  .text-input {
+    width: 100%;
+    border: none;
+    border-bottom: 1px solid var(--plum-soft);
+    background: transparent;
+    padding: 10px 4px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15.5px;
+    color: var(--ink);
+  }
+
+  .text-input:focus {
+    outline: none;
+    border-bottom: 1px solid var(--rose-deep);
+  }
+
+  .text-input::placeholder {
+    color: #B8A8AE;
+  }
+
+  .hint {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 12.5px;
+    color: var(--plum-soft);
+    margin: -8px 0 14px;
+  }
+
+  button {
+    margin-top: 32px;
+    background: var(--plum);
+    color: var(--cream);
+    border: none;
+    border-radius: 10px;
+    padding: 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  button:hover {
+    background: var(--rose-deep);
+  }
+
+  button:focus-visible, .option input:focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+
+  #results {
+    display: none;
+    margin-top: 40px;
+    border-top: 2px solid var(--plum);
+    padding-top: 32px;
+  }
+
+  #results.show { display: block; }
+
+  #results h2 {
+    font-family: 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+    font-style: italic;
+    font-weight: 400;
+    font-size: 28px;
+    color: var(--plum);
+    margin: 0 0 20px;
+  }
+
+  .result-item {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 15px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .result-item strong {
+    display: block;
+    color: var(--rose-deep);
+    font-size: 12px;
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+
+  .actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+  }
+
+  .actions button {
+    margin-top: 0;
+    flex: 1;
+  }
+
+  .secondary {
+    background: transparent;
+    border: 1px solid var(--plum);
+    color: var(--plum);
+  }
+
+  .secondary:hover {
+    background: rgba(61, 43, 61, 0.06);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="mark">for planning something good</div>
+    <h1>The Perfect Date Idea</h1>
+    <p>Ten quick questions. Pick what actually sounds good to you — there's no wrong answer, just useful ones.</p>
+  </header>
+
+  <form id="survey">
+
+    <div class="q">
+      <div class="q-num">1 of 10</div>
+      <p class="q-title">What kind of setting sounds best?</p>
+      <div class="options" data-name="setting">
+        <label class="option"><input type="radio" name="setting" value="Cozy indoors"> Cozy indoors</label>
+        <label class="option"><input type="radio" name="setting" value="Out in nature"> Out in nature</label>
+        <label class="option"><input type="radio" name="setting" value="Somewhere in the city"> Somewhere in the city</label>
+        <label class="option"><input type="radio" name="setting" value="On the water"> On the water</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-num">2 of 10</div>
+      <p class="q-title">Pick the energy you're in the mood for</p>
+      <div class="options" data-name="energy">
+        <label class="option"><input type="radio" name="energy" value="Slow and relaxed"> Slow and relaxed</label>
+        <label class="option"><input type="radio" name="energy" value="Playful and active"> Playful and active</label>
+        <label class="option"><input type="radio" name="energy" value="A little adventurous"> A little adventurous</label>
+        <label class="option"><input type="radio" name="energy" value="Deep and conversational"> Deep and conversational</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-num">3 of 10</div>
+      <p class="q-title">Food-wise, what sounds right?</p>
+      <input class="text-input" type="text" name="food" placeholder="Type your answer">
+    </div>
+
+    <div class="q">
+      <div class="q-num">4 of 10</div>
+      <p class="q-title">Which of these actually excite you? Pick as many as you like.</p>
+      <div class="hint">Multiple answers allowed</div>
+      <div class="options" data-name="activities">
+        <label class="option"><input type="checkbox" name="activities" value="Live music or a show"> Live music or a show</label>
+        <label class="option"><input type="checkbox" name="activities" value="Museum or gallery"> Museum or gallery</label>
+        <label class="option"><input type="checkbox" name="activities" value="Hiking or a long walk"> Hiking or a long walk</label>
+        <label class="option"><input type="checkbox" name="activities" value="Amusement park or arcade"> Amusement park or arcade</label>
+        <label class="option"><input type="checkbox" name="activities" value="Board games or a puzzle"> Board games or a puzzle</label>
+        <label class="option"><input type="checkbox" name="activities" value="A cooking or craft class"> A cooking or craft class</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-num">5 of 10</div>
+      <p class="q-title">What time of day works best?</p>
+      <div class="options" data-name="time">
+        <label class="option"><input type="radio" name="time" value="Morning"> Morning</label>
+        <label class="option"><input type="radio" name="time" value="Afternoon"> Afternoon</label>
+        <label class="option"><input type="radio" name="time" value="Evening"> Evening</label>
+        <label class="option"><input type="radio" name="time" value="Late night"> Late night</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-num">6 of 10</div>
+      <p class="q-title">Planned or spontaneous?</p>
+      <div class="options" data-name="planning">
+        <label class="option"><input type="radio" name="planning" value="I like knowing the plan"> I like knowing the plan</label>
+        <label class="option"><input type="radio" name="planning" value="Surprise me"> Surprise me</label>
+        <label class="option"><input type="radio" name="planning" value="A rough plan with room to wander"> A rough plan with room to wander</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-num">7 of 10</div>
+      <p class="q-title">How much moving around sounds good?</p>
+      <div class="options" data-name="activity_level">
+        <label class="option"><input type="radio" name="activity_level" value="Barely any, let's sit and talk"> Barely any, let's sit and talk</label>
+        <label class="option"><input type="radio" name="activity_level" value="A comfortable amount of walking"> A comfortable amount of walking</label>
+        <label class="option"><input type="radio" name="activity_level" value="Bring it on, something physical"> Bring it on, something physical</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-num">8 of 10</div>
+      <p class="q-title">Which budget range feels right?</p>
+      <div class="options" data-name="budget">
+        <label class="option"><input type="radio" name="budget" value="Free or nearly free"> Free or nearly free</label>
+        <label class="option"><input type="radio" name="budget" value="Modest, a nice casual outing"> Modest, a nice casual outing</label>
+        <label class="option"><input type="radio" name="budget" value="Willing to splurge for the right thing"> Willing to splurge for the right thing</label>
+      </div>
+    </div>
+
+    <div class="q">
+      <div class="q-num">9 of 10</div>
+      <p class="q-title">What matters most about the company?</p>
+      <input class="text-input" type="text" name="priorities" placeholder="Type your answer">
+    </div>
+
+    <div class="q">
+      <div class="q-num">10 of 10</div>
+      <p class="q-title">How should the date wind down?</p>
+      <input class="text-input" type="text" name="ending" placeholder="Type your answer">
+    </div>
+
+    <button type="submit">See what this adds up to</button>
+  </form>
+
+  <div id="results">
+    <h2>Here's the shape of it</h2>
+    <div id="result-list"></div>
+    <div class="actions">
+      <button type="button" class="secondary" id="copyBtn">Copy answers</button>
+      <button type="button" class="secondary" id="retakeBtn">Retake</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('survey');
+  const results = document.getElementById('results');
+  const resultList = document.getElementById('result-list');
+
+  const labels = {
+    setting: "Setting",
+    energy: "Energy",
+    food: "Food",
+    activities: "Activities that excite them",
+    time: "Best time of day",
+    planning: "Planned vs spontaneous",
+    activity_level: "Physical activity level",
+    budget: "Budget comfort",
+    priorities: "What matters in the company",
+    ending: "How the night should end"
+  };
+
+  // highlight selected option rows
+  form.addEventListener('change', (e) => {
+    const name = e.target.name;
+    document.querySelectorAll(`input[name="${name}"]`).forEach(input => {
+      input.closest('.option').classList.toggle('checked', input.checked);
+    });
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    const answers = {};
+
+    Object.keys(labels).forEach(key => {
+      const values = data.getAll(key).filter(v => v.trim() !== '');
+      answers[key] = values.length ? values.join(', ') : '— skipped —';
+    });
+
+    resultList.innerHTML = Object.entries(labels).map(([key, label]) => `
+      <div class="result-item">
+        <strong>${label}</strong>
+        ${answers[key]}
+      </div>
+    `).join('');
+
+    results.classList.add('show');
+    results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    window._lastAnswers = answers;
+  });
+
+  document.getElementById('retakeBtn').addEventListener('click', () => {
+    form.reset();
+    document.querySelectorAll('.option.checked').forEach(el => el.classList.remove('checked'));
+    results.classList.remove('show');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  document.getElementById('copyBtn').addEventListener('click', () => {
+    if (!window._lastAnswers) return;
+    const text = Object.entries(labels)
+      .map(([key, label]) => `${label}: ${window._lastAnswers[key]}`)
+      .join('\n');
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyBtn');
+      const original = btn.textContent;
+      btn.textContent = 'Copied';
+      setTimeout(() => { btn.textContent = original; }, 1500);
+    });
+  });
+</script>
+</body>
+</html>
